@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+
+<table>
+
+
+<tr>
+	<th> Nombre  </th>
+	<th> #Historias </th>
+	<th> #Puntos </th>
+</tr>
+{% for iteration in iteration_list%}
+	<tr>	
+
+		<td> {{iteration.project.name}} </td>
+
+		<td style="text-align:right"> {{iteration.story_count}} </td>
+
+		<td style="text-align:right" >  
+
+			 {{ iteration.stories|sum(attribute='points') }}
+			
+		</td>
+
+	</tr>
+
+
+{% endfor %}
+
+</table>
+
+
+{% endblock %}
