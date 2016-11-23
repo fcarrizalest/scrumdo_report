@@ -49,6 +49,9 @@ class Iteration(IterationJsonSerializer,db.Model):
 
 	stories = db.relationship('Story', backref='iterations',
                                 lazy='dynamic')
+
+	storiesBug = db.relationship('Story',
+                                lazy='dynamic', primaryjoin="and_(Iteration.id == Story.iteration_id ,Story.all_labels =='Bug'  )")
 	
 
 story_user = db.Table(
@@ -57,9 +60,36 @@ story_user = db.Table(
 	db.Column('user_id', db.Integer(), db.ForeignKey('users.id')))
 
 
+label_story = db.Table(
+	'label_story',
+	db.Column('story_id', db.Integer(), db.ForeignKey('stories.id')),
+	db.Column('label_id', db.Integer(), db.ForeignKey('labels.id')))
+
+
+class CellJsonSerializer(JsonSerializer):
+	__json_public__ =['id','full_label','label']
+
+
+class Cell(CellJsonSerializer,db.Model):
+	__tablename__ = 'cells'
+
+	id = db.Column(db.Integer(), primary_key=True)
+	color = db.Column(db.String(255) )
+	full_label = db.Column(db.String(255) )
+	label = db.Column(db.String(255) )
 
 
 
+class LabelJsonSerializer(JsonSerializer):
+	__json_public__ =['id','name','color']
+
+
+class Label(LabelJsonSerializer,db.Model):
+	__tablename__ = 'labels'
+
+	id = db.Column(db.Integer(), primary_key=True)
+	color = db.Column(db.String(255) )
+	name = db.Column(db.String(255) )
 
 
 class StoryJsonSerializer(JsonSerializer):
@@ -79,6 +109,13 @@ class Story(StoryJsonSerializer, db.Model):
 
 	iteration_id = db.Column(db.Integer,  db.ForeignKey('iterations.id'))
 	iteration = db.relationship('Iteration', backref=db.backref('iterations', lazy='dynamic'))
+
+	cell_id = db.Column(db.Integer,  db.ForeignKey('cells.id'))
+	cell = db.relationship('Cell', backref=db.backref('cells', lazy='dynamic'))
+
+	labels = db.relationship('Label', secondary=label_story, backref=db.backref('stories', lazy='dynamic') )
+	all_labels = db.Column(db.TEXT )
+
 
 
 class UserJsonSerializer(JsonSerializer):

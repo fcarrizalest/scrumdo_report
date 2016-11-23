@@ -7,7 +7,7 @@ from ..core import db
 from scrum.settings import scrumdo_username, scrumdo_password, scrumdo_host
 import slumber
 
-from ..services import organizations,projects,iterations,users,stories
+from ..services import organizations,projects,iterations,users,stories,cells,labels
 from datetime import datetime
 
 class LogCommand(Command):
@@ -26,11 +26,17 @@ class LogCommand(Command):
 			api_count = self.check_throttle(api_count)
 
 			for story in story_list:
+
+
+				if story['cell'] == None:
+					continue
 				print "2"
 
 				print story
 
 				db_users = []
+
+				db_labels = []
 
 
 				for user_api in story['assignee']:
@@ -51,8 +57,44 @@ class LogCommand(Command):
 
 					db_users.append( db_user  )
 
-				db_story = stories.first( id = story['id'] )
+				for label_api in story['labels']:
+					db_label = labels.first(id = label_api['id'] )
 
+					if not db_label:
+						new_label = labels.new(
+							id = label_api['id'],
+							color = label_api['color'],
+							name  = label_api['name']
+
+						 )
+
+						db_label = labels.save(new_label)
+
+					db_labels.append( db_label )
+
+
+				db_cell = cells.first( id = story['cell_id'] )
+
+				if not db_cell :
+
+					new_cell = cells.new(
+
+							id = story['cell']['id'],
+							color = story['cell']['color'],
+							full_label = story['cell']['full_label'],
+							label = story['cell']['label']
+
+						)
+
+					db_cell = cells.save(new_cell)
+
+
+
+
+
+
+				db_story = stories.first( id = story['id'] )
+				all_labels = ','.join(  str(e['name']) for e in story['labels']   )
 				if( not db_story ):
 
 					print "Creando story"
@@ -67,7 +109,10 @@ class LogCommand(Command):
 						summary = story['summary'],
 						points = story['points'],
 						users = db_users ,
-						iteration_id = story['iteration_id']
+						labels = db_labels,
+						iteration_id = story['iteration_id'],
+						cell_id = story['cell_id'],
+						all_labels = all_labels
 
 						)
 
@@ -85,7 +130,10 @@ class LogCommand(Command):
 
 				db_story.points = story['points']
 				db_story.users = db_users
+				db_story.labels = db_labels
+				db_story.all_labels = all_labels
 				db_story.iteration_id = story['iteration_id']
+				db_story.cell_id = story['cell_id']
 
 				db_story = stories.save(db_story)
 
@@ -183,7 +231,8 @@ class CronCommand(Command):
 							story_count = iteration['story_count'],
 							end_date = end_date,
 							hidden = iteration['hidden'],
-							project_id = db_project.id
+							project_id = db_project.id,
+
 
 
 						  )

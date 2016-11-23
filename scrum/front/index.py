@@ -7,7 +7,7 @@ import slumber
 from .forms import Searh_Form
 from ..services import iterations
 
-from datetime import datetime
+import datetime
 
 
 bp = Blueprint('dashboard', __name__)
@@ -17,11 +17,23 @@ def index():
 	form = Searh_Form()
 
 
-	iteration_list = iterations.find( end_date='2016-11-16' )
-	
+	today = datetime.date.today()
+
+	end_date = today + datetime.timedelta( (2-today.weekday()) % 7 )
+
+	str_date = end_date.strftime('%Y-%m-%d')
+
+	# str_date = '2016-10-26'
 
 
-	return render_template('index.html',iteration_list=iteration_list)
+	iteration_list = iterations.find( end_date= str_date )
+
+
+
+
+
+
+	return render_template('index.html', end_date= str_date, iteration_list=iteration_list)
 
 
 # Since we're iterating over your entire account in this example, there could be a lot of API calls.

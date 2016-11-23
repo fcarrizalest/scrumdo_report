@@ -3,7 +3,7 @@
 {% block content %}
 
 
-
+<h1>{{end_date}}</h1>
 
 <table>
 
@@ -12,26 +12,94 @@
 	<th> Nombre  </th>
 	<th> #Historias </th>
 	<th> #Puntos </th>
+	<th> #Bugs Puntos </th>
+
 </tr>
 {% for iteration in iteration_list%}
+
+
+	{% if iteration.stories|sum(attribute='points') > 0 %}
 	<tr>	
 
-		<td> {{iteration.project.name}} </td>
+		<td> {{iteration.project.name}}  - {{iteration.name}}</td>
 
 		<td style="text-align:right"> {{iteration.story_count}} </td>
 
 		<td style="text-align:right" >  
 
+
 			 {{ iteration.stories|sum(attribute='points') }}
 			
 		</td>
 
-	</tr>
 
+		<td style="text-align:right">
+			{{ iteration.storiesBug|sum(attribute='points') }}
+
+		</td> 
+
+	</tr>
+		{% endif %}
 
 {% endfor %}
 
 </table>
+
+
+{% for iteration in iteration_list%}
+	
+
+	{% if iteration.stories|sum(attribute='points') > 0 %}
+
+
+	<h1>{{iteration.project.name}} - {{iteration.name}}  ( {{ iteration.stories|sum(attribute='points') }} ) </h1>
+	<br>
+	<table>
+
+		<tr>
+				<th>  Usuario(s) </th>
+				<th>  #Historia </th>
+				<th>  Historia</th>
+				<th>  Puntos </th>
+				<th>  Status</th>
+				<th>  Tipo</th>
+
+
+		</tr>
+	{% for story in iteration.stories%}
+	<tr>	
+
+			<td> 
+
+
+				{{story.users|map(attribute='username')|join(', ') }}
+				
+
+			</td>
+
+			<td> #{{story.number}}</td>
+			<td> {{story.summary|truncate(50)}} </td>
+			<td style="text-align:right"> {{story.points}} </td>
+			<td style="text-align:center" > {{story.cell.label}} </td>
+			<td style="text-align:center"> 
+
+
+				{{story.labels|map(attribute='name')|join(', ') }}
+				
+				
+
+			</td>
+
+	</tr>
+
+	{% endfor %} 
+	</table>
+
+	{% endif %}
+
+
+{% endfor %}
+
 
 
 {% endblock %}

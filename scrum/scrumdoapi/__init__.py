@@ -8,7 +8,7 @@ from ..helpers import JSONEncoder
 from .. import factory
 
 from ..core import Service
-from .models import Organization,Project,Iteration,User,Story
+from .models import Organization,Project,Iteration,User,Story,Label,Cell
 
 
 class OrganizationsService(Service):
@@ -28,6 +28,11 @@ class UsersService(Service):
 class StoriesService(Service):
     __model__ = Story
 
+class LabelsService(Service):
+    __model__ = Label
+
+class CellsService(Service):
+    __model__ = Cell
 
 
 def create_app(settings_override=None, register_security_blueprint=False):

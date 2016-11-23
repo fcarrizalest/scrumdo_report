@@ -1,4 +1,4 @@
-from .scrumdoapi import UsersService,StoriesService,OrganizationsService,ProjectsService,IterationsService
+from .scrumdoapi import UsersService,CellsService,LabelsService,StoriesService,OrganizationsService,ProjectsService,IterationsService
 
 
 organizations = OrganizationsService()
@@ -6,3 +6,5 @@ projects = ProjectsService()
 iterations = IterationsService()
 users = UsersService()
 stories = StoriesService()
+labels = LabelsService()
+cells = CellsService()
