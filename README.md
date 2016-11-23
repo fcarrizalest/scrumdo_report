@@ -14,7 +14,11 @@ Usage
 
 
 4. Run the scripts
+	
+	python manage.py cron
 
+	python manage.py log
+	
     python wsgi.py
 
 
