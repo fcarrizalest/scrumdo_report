@@ -14,6 +14,7 @@ class LogCommand(Command):
 
 	def run(self):
 		print "Iniciando"
+
 		base_url = "%s/api/v3/" % scrumdo_host
 		api = slumber.API(base_url, auth=(scrumdo_username, scrumdo_password))
 
@@ -98,7 +99,7 @@ class LogCommand(Command):
 				if( not db_story ):
 
 					print "Creando story"
-					print story['summary']
+					
 
 					new_story = stories.new(
 						id= story['id'],
@@ -163,6 +164,9 @@ class CronCommand(Command):
 
 	def run(self):
 
+		db.drop_all()
+		db.create_all()
+
 		base_url = "%s/api/v3/" % scrumdo_host
 		api = slumber.API(base_url, auth=(scrumdo_username, scrumdo_password))
 
@@ -189,8 +193,8 @@ class CronCommand(Command):
 				db_project = projects.first( id=project['id'] )
 
 				if( not db_project ):
-					print "Creando proyecto"
-					print project['name']
+					
+
 					new_project = projects.new( id=project['id'], name = project['name'] , slug=project['slug'], organization_id = db_org.id )
 					db_project = projects.save(new_project)
 

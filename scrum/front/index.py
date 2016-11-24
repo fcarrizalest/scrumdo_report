@@ -23,7 +23,7 @@ def index():
 
 	str_date = end_date.strftime('%Y-%m-%d')
 
-	# str_date = '2016-10-26'
+	# str_date = '2016-11-23'
 
 
 	iteration_list = iterations.find( end_date= str_date )
