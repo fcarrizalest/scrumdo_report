@@ -23,17 +23,51 @@ def index():
 
 	str_date = end_date.strftime('%Y-%m-%d')
 
-	# str_date = '2016-11-23'
+	# str_date = '2016-08-10'
 
 
 	iteration_list = iterations.find( end_date= str_date )
 
 
+	sql = " SELECT projects.name as PName, \
+				  iterations.name, \
+				  iterations.end_date, \
+				  iterations.story_count, \
+				  ( \
+				  	  SELECT ifnull(SUM( stories.points ) ,0)\
+				  	  FROM stories \
+				  	  WHERE stories.iteration_id = iterations.id \
+				   ) as SPoints, \
+				   	( \
+				  	  SELECT ifnull( SUM( stories.points ) , 0) \
+				  	  FROM stories \
+				  	  WHERE stories.iteration_id = iterations.id AND\
+				  	  		stories.all_labels = 'Bug' \
+				   ) as SBPoints, \
+					( \
+				  	  SELECT ifnull( COUNT( stories.id ) , 0) \
+				  	  FROM stories \
+				  	  WHERE stories.iteration_id = iterations.id AND\
+				  	  		stories.all_labels = 'Bug' \
+				   ) as SB \
+			FROM iterations \
+			INNER JOIN projects ON iterations.project_id = projects.id \
+			WHERE  iterations.end_date = :end_date \
+			"
+
+	d = db.engine.execute(sql,{ "bug":"Bug" , "end_date":str_date})
+
+	rows = []
+
+	for row in d:
+		rows.append(row)
 
 
 
 
-	return render_template('index.html', end_date= str_date, iteration_list=iteration_list)
+
+
+	return render_template('index.html', rows=rows, end_date= str_date, iteration_list=iteration_list)
 
 
 # Since we're iterating over your entire account in this example, there could be a lot of API calls.

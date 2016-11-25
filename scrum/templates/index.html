@@ -12,36 +12,38 @@
 	<th> Nombre  </th>
 	<th> #Historias </th>
 	<th> #Puntos </th>
+
+	<th> #HistoriasB </th>
 	<th> #Bugs Puntos </th>
 
 </tr>
-{% for iteration in iteration_list%}
 
 
-	{% if iteration.stories|sum(attribute='points') > 0 %}
-	<tr>	
 
-		<td> {{iteration.project.name}}  - {{iteration.name}}</td>
 
+{% for iteration in rows%}
+
+	
+		<tr>	
+
+		<td> {{ iteration.PName}} - {{iteration.name}}</td>
 		<td style="text-align:right"> {{iteration.story_count}} </td>
+		<td style="text-align:right" >  {{iteration.SPoints}}  </td>
 
-		<td style="text-align:right" >  
-
-
-			 {{ iteration.stories|sum(attribute='points') }}
-			
-		</td>
-
-
-		<td style="text-align:right">
-			{{ iteration.storiesBug|sum(attribute='points') }}
-
-		</td> 
+		<td style="text-align:right" >   {{iteration.SB}}  </td>
+		<td style="text-align:right" >   {{iteration.SBPoints}}  </td>
 
 	</tr>
-		{% endif %}
 
 {% endfor %}
+	<tr>
+		<td></td>
+		<td style="text-align:right"> {{ rows|sum(  attribute='story_count' )}} </td>
+		<td style="text-align:right" > {{ rows|sum(  attribute='SPoints' )}} </td>
+
+		<td style="text-align:right" >  {{ rows|sum(  attribute='SB' )}}  </td>
+		<td style="text-align:right" >  {{ rows|sum(  attribute='SBPoints' )}}  </td>
+	</tr>
 
 </table>
 
@@ -93,6 +95,9 @@
 	</tr>
 
 	{% endfor %} 
+
+	
+
 	</table>
 
 	{% endif %}
