@@ -5,7 +5,7 @@ from scrum.settings import scrumdo_username, scrumdo_password, scrumdo_host
 import slumber
 
 from .forms import Searh_Form
-from ..services import iterations
+from ..services import iterations,users
 
 import datetime
 
@@ -48,7 +48,7 @@ def index():
 
 	iteration_list = iterations.find( end_date= str_date )
 
-	print str_date
+	
 
 
 	sql = " SELECT projects.name as PName, \
@@ -84,6 +84,31 @@ def index():
 	for row in d:
 		rows.append(row)
 
+	sql = "SELECT 	users.username,\
+					users.first_name,\
+					COUNT(stories.id) as total,\
+					SUM(stories.points) as puntos\
+			FROM story_user\
+			INNER JOIN\
+				stories ON stories.id = story_user.story_id\
+			INNER JOIN \
+				users ON users.id = story_user.user_id\
+			INNER JOIN\
+				iterations ON iterations.id = stories.iteration_id AND\
+				iterations.end_date = :end_date\
+			GROUP BY users.id\
+		  "
+
+
+	urows = db.engine.execute(sql,{"end_date":str_date})
+
+	u = []
+	for row in urows:
+		u.append(row)
+
+
+
+
 
 
 
@@ -94,7 +119,8 @@ def index():
 	return render_template('index.html',
 		form = form, 
 		select_list=select_list, 
-		rows=rows, 
+		rows=rows,
+		users=u, 
 		end_date= str_date, 
 		iteration_list=iteration_list)
 
