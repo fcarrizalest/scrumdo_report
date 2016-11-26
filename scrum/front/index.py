@@ -26,7 +26,29 @@ def index():
 	# str_date = '2016-08-10'
 
 
+	
+
+
+	select_list = db.engine.execute('SELECT iterations.end_date \
+									 FROM iterations \
+									 GROUP BY iterations.end_date')
+
+	choices = [( str(x.end_date), x.end_date) for x in select_list]
+
+	form.end_date.choices = choices
+
+	if form.validate_on_submit():
+		str_date = request.values.get('end_date')
+	else:
+		form.end_date.default = str_date
+		form.process()
+
+	
+
+
 	iteration_list = iterations.find( end_date= str_date )
+
+	print str_date
 
 
 	sql = " SELECT projects.name as PName, \
@@ -67,7 +89,14 @@ def index():
 
 
 
-	return render_template('index.html', rows=rows, end_date= str_date, iteration_list=iteration_list)
+
+
+	return render_template('index.html',
+		form = form, 
+		select_list=select_list, 
+		rows=rows, 
+		end_date= str_date, 
+		iteration_list=iteration_list)
 
 
 # Since we're iterating over your entire account in this example, there could be a lot of API calls.
