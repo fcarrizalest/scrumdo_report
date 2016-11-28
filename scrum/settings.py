@@ -1,6 +1,6 @@
 # Global config for all examples
-scrumdo_username = "fcarrizalest@gmail.com"
-scrumdo_password = "1314847Paco"
+scrumdo_username = "-"
+scrumdo_password = "-"
 scrumdo_host = "https://app.scrumdo.com"
 organization_slug = "org"
 

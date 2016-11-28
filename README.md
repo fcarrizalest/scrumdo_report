@@ -19,7 +19,7 @@ Usage
 
 	python manage.py log
 	
-    python wsgi.py
+    python web.py
 
 
 
