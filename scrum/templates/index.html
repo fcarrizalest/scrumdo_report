@@ -2,10 +2,8 @@
 
 {% block content %}
 
+
 <h1>{{end_date}}</h1>
-
-
-
 
 
 <form action="{{url_for('.index')}}" method="POST" >
@@ -18,14 +16,13 @@
 
 
 </form>
-<div class="mdl-grid">
-	 <div class="mdl-cell mdl-cell--12-col">
-<h1>Resumen</h1>
-<table class="mdl-data-table mdl-js-data-table">
 
-<thead>
+<h1>Resumen</h1>
+<table>
+
+
 <tr>
-	<th class="mdl-data-table__cell--non-numeric"> Nombre  </th>
+	<th> Nombre  </th>
 	<th> #Historias </th>
 	<th> #Puntos </th>
 
@@ -33,90 +30,69 @@
 	<th> #Bugs Puntos </th>
 
 </tr>
-</thead>
 
 
 
-<tbody>
+
 {% for iteration in rows%}
 
 	
 		<tr>	
 
-		<td class="mdl-data-table__cell--non-numeric"> {{ iteration.PName}} - {{iteration.name}}</td>
-		<td > {{iteration.story_count}} </td>
-		<td  >  {{iteration.SPoints}}  </td>
+		<td> {{ iteration.PName}} - {{iteration.name}}</td>
+		<td style="text-align:right"> {{iteration.story_count}} </td>
+		<td style="text-align:right" >  {{iteration.SPoints}}  </td>
 
-		<td  >   {{iteration.SB}}  </td>
-		<td  >   {{iteration.SBPoints}}  </td>
+		<td style="text-align:right" >   {{iteration.SB}}  </td>
+		<td style="text-align:right" >   {{iteration.SBPoints}}  </td>
 
 	</tr>
 
 {% endfor %}
-
-</tbody>
 	<tr>
 		<td></td>
-		<td > {{ rows|sum(  attribute='story_count' )}} </td>
-		<td  > {{ rows|sum(  attribute='SPoints' )}} </td>
+		<td style="text-align:right"> {{ rows|sum(  attribute='story_count' )}} </td>
+		<td style="text-align:right" > {{ rows|sum(  attribute='SPoints' )}} </td>
 
-		<td  >  {{ rows|sum(  attribute='SB' )}}  </td>
-		<td  >  {{ rows|sum(  attribute='SBPoints' )}}  </td>
+		<td style="text-align:right" >  {{ rows|sum(  attribute='SB' )}}  </td>
+		<td style="text-align:right" >  {{ rows|sum(  attribute='SBPoints' )}}  </td>
 	</tr>
 
 </table>
 
-</div>
-
-</div>
-
-<div class="mdl-grid">
- <div class="mdl-cell mdl-cell--12-col">
-
 
 <h1> Usuarios </h1>
-<table class="mdl-data-table mdl-js-data-table">
-	<thead>
+<table>
 	<tr>
-		<td class="mdl-data-table__cell--non-numeric">Usuario</td>
+		<td>Usuario</td>
 		
-		<td > #Historias</td>
+		<td> #Historias</td>
 		<td> #Puntos </td>
-	</tr>
-	</thead>
-	<tbody>
+	<tr>
 
 	{% for user in users %}
 
 		<tr>
-				<td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
+				<td>{{user.username}}</td>
 				
-				<td >{{user.total}}</td>
-				<td >{{user.puntos}}</td>
+				<td style="text-align:right">{{user.total}}</td>
+				<td style="text-align:right">{{user.puntos}}</td>
 
 
-		</tr>
+		<tr>
 
 	{% endfor %}
-	</tbody>
 
 	<tr>
 				<td></td>
 				
-				<td >{{ users|sum(attribute='total') }}</td>
-				<td >{{users|sum(attribute='puntos') }}</td>
+				<td style="text-align:right">{{ users|sum(attribute='total') }}</td>
+				<td style="text-align:right">{{users|sum(attribute='puntos') }}</td>
 
 
-		</tr>
+		<tr>
 
 </table>
-
-</div>
-
-</div>
-
-<div class="mdl-grid">
-	<div class="mdl-cell mdl-cell--12-col">
 
 <h1>Detalle</h1>
 
@@ -129,24 +105,22 @@
 
 	<h2>{{iteration.project.name}} - {{iteration.name}}  ( {{ iteration.stories|sum(attribute='points') }} ) </h2>
 	<br>
-	<table class="mdl-data-table mdl-js-data-table">
-		<thead>
-			<tr>
-					<th class="mdl-data-table__cell--non-numeric">  Usuario(s) </th>
-					<th>  #Historia </th>
-					<th class="mdl-data-table__cell--non-numeric">  Historia</th>
-					<th>  Puntos </th>
-					<th class="mdl-data-table__cell--non-numeric">  Status</th>
-					<th class="mdl-data-table__cell--non-numeric">  Tipo</th>
+	<table>
+
+		<tr>
+				<th>  Usuario(s) </th>
+				<th>  #Historia </th>
+				<th>  Historia</th>
+				<th>  Puntos </th>
+				<th>  Status</th>
+				<th>  Tipo</th>
 
 
-			</tr>
-		</thead>
-		<tbody>
+		</tr>
 	{% for story in iteration.stories%}
 	<tr>	
 
-			<td class="mdl-data-table__cell--non-numeric"> 
+			<td> 
 
 
 				{{story.users|map(attribute='username')|join(', ') }}
@@ -155,10 +129,10 @@
 			</td>
 
 			<td> #{{story.number}}</td>
-			<td class="mdl-data-table__cell--non-numeric"> {{story.summary|truncate(50)}} </td>
-			<td > {{story.points}} </td>
-			<td class="mdl-data-table__cell--non-numeric" style="text-align:center" > {{story.cell.label}} </td>
-			<td  class="mdl-data-table__cell--non-numeric" style="text-align:center"> 
+			<td> {{story.summary|truncate(50)}} </td>
+			<td style="text-align:right"> {{story.points}} </td>
+			<td style="text-align:center" > {{story.cell.label}} </td>
+			<td style="text-align:center"> 
 
 
 				{{story.labels|map(attribute='name')|join(', ') }}
@@ -170,7 +144,7 @@
 	</tr>
 
 	{% endfor %} 
-</tbody>
+
 	
 
 	</table>
@@ -180,8 +154,7 @@
 
 {% endfor %}
 
-</div>
 
-</div>
+
 
 {% endblock %}
