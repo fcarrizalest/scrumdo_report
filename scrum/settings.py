@@ -10,7 +10,7 @@ project_slug = 'project'
 
 DEBUG = True
 SECRET_KEY = 'UUC5324K4D2PNQR0123EEECGF3'
-SQLALCHEMY_DATABASE_URI = 'sqlite:////Users/fcarrizalest/Documents/proyectos/python/scrumdo/foo.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///foo.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SECURITY_POST_LOGIN_VIEW = '/'
 SECURITY_PASSWORD_HASH = 'YIX0N2GDH7M1AA85V9TT'

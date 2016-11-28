@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<div class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
 <h1>{{end_date}}</h1>
 
 
@@ -12,13 +13,15 @@
 
 	{{ form.csrf_token }}
 
-	<div>{{ form.end_date }}</div>
+	<div>{{ form.end_date }}
 
-	<input type="submit"> 
+	<input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit"> 
 
-
+	</div>
 </form>
-<div class="mdl-grid">
+
+</div>
+<div class="  section--center mdl-grid mdl-grid--no-spacing">
 	 <div class="mdl-cell mdl-cell--12-col">
 <h1>Resumen</h1>
 <table class="mdl-data-table mdl-js-data-table">
