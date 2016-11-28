@@ -124,7 +124,34 @@ def index():
 		end_date= str_date, 
 		iteration_list=iteration_list)
 
+@route(bp, '/r2',methods=('GET','POST'))
+def r2():
+	sql = "SELECT 	users.username,\
+					users.first_name,\
+					iterations.end_date,\
+					iterations.start_date,\
+					COUNT(stories.id) as total,\
+					SUM(stories.points) as puntos\
+			FROM story_user\
+			INNER JOIN\
+				stories ON stories.id = story_user.story_id\
+			INNER JOIN \
+				users ON users.id = story_user.user_id\
+			INNER JOIN\
+				iterations ON iterations.id = stories.iteration_id\
+			WHERE iterations.end_date > '2016-10-01' 	\
+			GROUP BY iterations.end_date , users.username\
+			ORDER BY  users.username DESC,iterations.end_date DESC\
+		  "
 
+
+	urows = db.engine.execute(sql)
+
+	u = []
+	for row in urows:
+		u.append(row)
+	return render_template('r2.html',u=u)
+	
 # Since we're iterating over your entire account in this example, there could be a lot of API calls.
 # This function is a dumb way to make sure we don't go over the throttle limit.
 def check_throttle(requests):	
