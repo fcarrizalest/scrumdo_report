@@ -154,7 +154,7 @@ def r2():
 
 
 @route(bp, '/iniciadb',methods=('GET','POST'))
-def index():
+def iniciadb():
 	db.create_all()
 	return redirect(url_for('.index'))
 	
