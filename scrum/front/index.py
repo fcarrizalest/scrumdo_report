@@ -68,7 +68,7 @@ def index():
 	
 
 
-	sql = " SELECT projects.name as PName, \
+	sql = " SELECT projects.name as pname, \
 				  iterations.name, \
 				  iterations.end_date, \
 				  coalesce( NULLIF(iterations.story_count,0),0) as story_count, \
