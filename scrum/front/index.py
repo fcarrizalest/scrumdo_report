@@ -16,6 +16,17 @@ from rq import Queue
 import os
 import redis
 
+
+from flask_script import Manager
+
+from ..scrumdoapi import create_app
+
+from ..manage import CronCommand,LogCommand
+
+
+
+
+
 bp = Blueprint('dashboard', __name__)
 
 @route(bp, '/',methods=('GET','POST'))
@@ -159,8 +170,11 @@ def r2():
 	return render_template('r2.html',u=u)
 
 def buscar():
-	cron = LogCommand()
-	cron.run()
+
+	manager = Manager(create_app())
+	manager.add_command('log', LogCommand())
+
+	manager.run(None,'log' )
 	return 'ok'
 
 
@@ -176,8 +190,10 @@ def log():
 
 
 def buscarcron():
-	cron = CronCommand()
-	cron.run()
+	manager = Manager(create_app())
+	manager.add_command('cron', CronCommand())
+
+	manager.run(None,'cron' )
 
 	return 'ok'
 @route(bp, '/cron',methods=('GET','POST'))
