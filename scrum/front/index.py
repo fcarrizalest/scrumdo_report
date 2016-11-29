@@ -12,6 +12,8 @@ from ..manage.cron import CronCommand,LogCommand
 
 import datetime
 
+from rq import Queue
+import os
 
 bp = Blueprint('dashboard', __name__)
 
@@ -155,11 +157,20 @@ def r2():
 		u.append(row)
 	return render_template('r2.html',u=u)
 
+def buscar():
+	cron = LogCommand()
+	cron.run()
+	return 'ok'
+
+
 
 @route(bp, '/log',methods=('GET','POST'))
 def log():
-	cron = LogCommand()
-	cron.run()
+	redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+	conn = redis.from_url(redis_url)
+	q = Queue(connection=conn)
+	result = q.enqueue(buscar)
+	
 	return redirect(url_for('.index'))
 
 @route(bp, '/cron',methods=('GET','POST'))
