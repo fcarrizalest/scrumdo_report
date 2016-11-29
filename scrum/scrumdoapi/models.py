@@ -104,7 +104,7 @@ class Story(StoryJsonSerializer, db.Model):
 	number = db.Column(db.Integer())
 	detail = db.Column(db.TEXT )
 	summary = db.Column(db.TEXT )
-	points = db.Column(db.Integer( ) )
+	points = db.Column(db.Float( ) )
 	users = db.relationship('User', secondary=story_user, backref=db.backref('stories', lazy='dynamic') )
 
 	iteration_id = db.Column(db.Integer,  db.ForeignKey('iterations.id'))
