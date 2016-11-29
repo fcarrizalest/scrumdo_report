@@ -96,6 +96,9 @@ class LogCommand(Command):
 
 				db_story = stories.first( id = story['id'] )
 				all_labels = ','.join(  str(e['name']) for e in story['labels']   )
+				if(story['points'] == '?'):
+					story['points'] = 0
+					
 				if( not db_story ):
 
 					print "Creando story"
