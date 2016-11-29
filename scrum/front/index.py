@@ -48,7 +48,7 @@ def index():
 
 	select_list = db.engine.execute(text('SELECT iterations.end_date \
 									 FROM iterations \
-									 GROUP BY iterations.end_date'))
+									 GROUP BY iterations.end_date order by iterations.end_date DESC'))
 
 	choices = [( str(x.end_date), x.end_date) for x in select_list]
 
