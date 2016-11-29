@@ -14,6 +14,7 @@ import datetime
 
 from rq import Queue
 import os
+import redis
 
 bp = Blueprint('dashboard', __name__)
 
