@@ -128,9 +128,9 @@ def index():
 @route(bp, '/r2',methods=('GET','POST'))
 def r2():
 	sql = "SELECT 	users.username,\
-					DISTINCT ON (users.first_name),\
-					DISTINCT ON ( iterations.end_date ),\
-					DISTINCT ON ( iterations.start_date),\
+					min(users.first_name) as first_name,\
+					min( iterations.end_date ) as end_date,\
+					min( iterations.start_date) as start_date,\
 					COUNT(stories.id) as total,\
 					SUM(stories.points) as puntos\
 			FROM story_user\
