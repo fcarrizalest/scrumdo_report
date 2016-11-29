@@ -71,20 +71,20 @@ def index():
 	sql = " SELECT projects.name as PName, \
 				  iterations.name, \
 				  iterations.end_date, \
-				  iterations.story_count, \
+				  coalesce( NULLIF(iterations.story_count,''),0), \
 				  ( \
-				  	  SELECT coalesce(SUM( stories.points ) ,0)\
+				  	  SELECT coalesce( NULLIF( SUM( stories.points ),'' ) ,0)\
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id \
 				   ) as SPoints, \
 				   	( \
-				  	  SELECT coalesce( SUM( stories.points ) , 0) \
+				  	  SELECT coalesce( NULLIF( SUM( stories.points ) ,'') , 0) \
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id AND\
 				  	  		stories.all_labels = 'Bug' \
 				   ) as SBPoints, \
 					( \
-				  	  SELECT coalesce( COUNT( stories.id ) , 0) \
+				  	  SELECT coalesce( NULLIF( COUNT( stories.id ),'') , 0) \
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id AND\
 				  	  		stories.all_labels = 'Bug' \
