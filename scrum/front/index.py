@@ -8,6 +8,8 @@ from sqlalchemy.sql import text
 from .forms import Searh_Form
 from ..services import iterations,users
 
+from ..manage.cron import CronCommand,LogCommand
+
 import datetime
 
 
@@ -152,6 +154,20 @@ def r2():
 	for row in urows:
 		u.append(row)
 	return render_template('r2.html',u=u)
+
+
+@route(bp, '/log',methods=('GET','POST'))
+def log():
+	cron = LogCommand()
+	cron.run()
+	return redirect(url_for('.index'))
+
+@route(bp, '/cron',methods=('GET','POST'))
+def cron():
+	cron = CronCommand()
+	cron.run()
+	return redirect(url_for('.index'))
+
 
 
 @route(bp, '/iniciadb',methods=('GET','POST'))
