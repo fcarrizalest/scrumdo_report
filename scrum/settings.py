@@ -10,7 +10,7 @@ project_slug = 'project'
 
 DEBUG = True
 SECRET_KEY = 'UUC5324K4D2PNQR0123EEECGF3'
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://xkclyrittonrrq:A6L4_t7_jogr_-RqsMa3F-jYab@ec2-54-235-183-5.compute-1.amazonaws.com:5432/d655t95g92oods'
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres://yqbdemztsysrzi:PGDfR3W1SM7qEhF6S-pPyuxvSF@ec2-54-243-48-181.compute-1.amazonaws.com:5432/d5f0qpss0a0su4'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SECURITY_POST_LOGIN_VIEW = '/'
 SECURITY_PASSWORD_HASH = 'YIX0N2GDH7M1AA85V9TT'
