@@ -151,6 +151,12 @@ def r2():
 	for row in urows:
 		u.append(row)
 	return render_template('r2.html',u=u)
+
+
+@route(bp, '/iniciadb',methods=('GET','POST'))
+def index():
+	db.create_all()
+	return redirect(url_for('.index'))
 	
 # Since we're iterating over your entire account in this example, there could be a lot of API calls.
 # This function is a dumb way to make sure we don't go over the throttle limit.
