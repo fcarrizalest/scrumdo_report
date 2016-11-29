@@ -3,6 +3,7 @@ from ..core import db
 from . import route
 from scrum.settings import scrumdo_username, scrumdo_password, scrumdo_host
 import slumber
+from sqlalchemy.sql import text
 
 from .forms import Searh_Form
 from ..services import iterations,users
@@ -29,9 +30,9 @@ def index():
 	
 
 
-	select_list = db.engine.execute('SELECT iterations.end_date \
+	select_list = db.engine.execute(text('SELECT iterations.end_date \
 									 FROM iterations \
-									 GROUP BY iterations.end_date')
+									 GROUP BY iterations.end_date'))
 
 	choices = [( str(x.end_date), x.end_date) for x in select_list]
 
@@ -77,7 +78,7 @@ def index():
 			WHERE  iterations.end_date = :end_date \
 			"
 
-	d = db.engine.execute(sql,{ "bug":"Bug" , "end_date":str_date})
+	d = db.engine.execute(text(sql),  bug ="Bug" , end_date=str_date)
 
 	rows = []
 
@@ -100,7 +101,7 @@ def index():
 		  "
 
 
-	urows = db.engine.execute(sql,{"end_date":str_date})
+	urows = db.engine.execute(text(sql), end_date=str_date )
 
 	u = []
 	for row in urows:
