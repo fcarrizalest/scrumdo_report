@@ -48,10 +48,10 @@
 
 		<td class="mdl-data-table__cell--non-numeric"> {{ iteration.PName}} - {{iteration.name}}</td>
 		<td > {{iteration.story_count}} </td>
-		<td  >  {{iteration.SPoints}}  </td>
+		<td  >  {{iteration.spoints}}  </td>
 
-		<td  >   {{iteration.SB}}  </td>
-		<td  >   {{iteration.SBPoints}}  </td>
+		<td  >   {{iteration.sb}}  </td>
+		<td  >   {{iteration.sbPoints}}  </td>
 
 	</tr>
 
@@ -61,10 +61,10 @@
 	<tr>
 		<td></td>
 		<td > {{ rows|sum(  attribute='story_count' )}} </td>
-		<td  > {{ rows|sum(  attribute='SPoints' )}} </td>
+		<td  > {{ rows|sum(  attribute='spoints' )}} </td>
 
-		<td  >  {{ rows|sum(  attribute='SB' )}}  </td>
-		<td  >  {{ rows|sum(  attribute='SBPoints' )}}  </td>
+		<td  >  {{ rows|sum(  attribute='sb' )}}  </td>
+		<td  >  {{ rows|sum(  attribute='sbpoints' )}}  </td>
 	</tr>
 
 </table>

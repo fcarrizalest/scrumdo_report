@@ -73,22 +73,22 @@ def index():
 				  iterations.end_date, \
 				  coalesce( NULLIF(iterations.story_count,0),0) as story_count, \
 				  ( \
-				  	  SELECT coalesce( NULLIF( SUM( stories.points ),0 ) ,0) as SPoints\
+				  	  SELECT coalesce( NULLIF( SUM( stories.points ),0 ) ,0) as spoints\
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id \
-				   ) as SPoints, \
+				   ) as spoints, \
 				   	( \
-				  	  SELECT coalesce( NULLIF( SUM( stories.points ) ,0) , 0) as SBPoints \
+				  	  SELECT coalesce( NULLIF( SUM( stories.points ) ,0) , 0) as sbpoints \
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id AND\
 				  	  		stories.all_labels = 'Bug' \
-				   ) as SBPoints, \
+				   ) as sbpoints, \
 					( \
-				  	  SELECT coalesce( NULLIF( COUNT( stories.id ),0) , 0) as SB \
+				  	  SELECT coalesce( NULLIF( COUNT( stories.id ),0) , 0) as sb \
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id AND\
 				  	  		stories.all_labels = 'Bug' \
-				   ) as SB \
+				   ) as sb \
 			FROM iterations \
 			INNER JOIN projects ON iterations.project_id = projects.id \
 			WHERE  iterations.end_date = :end_date \
