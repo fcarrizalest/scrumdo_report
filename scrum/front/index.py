@@ -99,7 +99,8 @@ def index():
 	rows = []
 
 	for row in d:
-		rows.append(row)
+		row2dict = lambda r: {c.name: str(getattr(r, c.name)) for c in row.__table__.columns}
+		rows.append(row2dict)
 
 	sql = "SELECT 	users.username,\
 					users.first_name,\
