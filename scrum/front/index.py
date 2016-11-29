@@ -174,10 +174,20 @@ def log():
 	
 	return redirect(url_for('.index'))
 
-@route(bp, '/cron',methods=('GET','POST'))
-def cron():
+
+def buscarcron():
 	cron = CronCommand()
 	cron.run()
+
+	return 'ok'
+@route(bp, '/cron',methods=('GET','POST'))
+def cron():
+	redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+	conn = redis.from_url(redis_url)
+	q = Queue(connection=conn)
+	result = q.enqueue(buscarcron)
+	
+	
 	return redirect(url_for('.index'))
 
 
