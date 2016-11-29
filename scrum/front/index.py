@@ -146,7 +146,7 @@ def r2():
 		  "
 
 
-	urows = db.engine.execute(sql)
+	urows = db.engine.execute(text(sql))
 
 	u = []
 	for row in urows:
@@ -156,6 +156,7 @@ def r2():
 
 @route(bp, '/iniciadb',methods=('GET','POST'))
 def iniciadb():
+	db.drop_all()
 	db.create_all()
 	return redirect(url_for('.index'))
 	
