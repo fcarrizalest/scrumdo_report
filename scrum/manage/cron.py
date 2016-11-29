@@ -102,7 +102,7 @@ class LogCommand(Command):
 					
 
 					new_story = stories.new(
-						id= story['id'],
+						id= int(story['id']),
 						completed_task_count = story['completed_task_count'],
 						age_hours = story['age_hours'],
 						number = story['number'],
