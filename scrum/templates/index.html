@@ -2,18 +2,24 @@
 
 {% block content %}
 
-<div class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-<h1>{{end_date}}</h1>
+<div class="section--center mdl-grid mdl-grid--no-spacing ">
 
-
-
-
-
-<form action="{{url_for('.index')}}" method="POST" >
+<form style="margin:0px auto" action="{{url_for('.index')}}" method="POST" >
 
 	{{ form.csrf_token }}
 
-	<div>{{ form.end_date }}
+	<div >
+
+		<div class="mdl-selectfield mdl-js-selectfield">
+		{{ form.end_date(class_="mdl-selectfield__select") }}
+		<div class="mdl-selectfield__icon"><i class="material-icons">arrow_drop_down</i></div>
+		<label class="mdl-selectfield__label" for="gender">User gender</label>
+  	<span class="mdl-selectfield__error">Select a value</span>
+		</div>
+
+
+
+
 
 	<input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit"> 
 
@@ -21,10 +27,78 @@
 </form>
 
 </div>
+
+
 <div class="  section--center mdl-grid mdl-grid--no-spacing">
-	 <div class="mdl-cell mdl-cell--12-col">
-<h1>Resumen</h1>
-<table class="mdl-data-table mdl-js-data-table">
+	<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+		<div class="mdl-tabs__tab-bar ">
+	      <a href="#resumen-panel" class="mdl-tabs__tab is-active">Resumen</a>
+	      <a href="#usuarios-panel" class="mdl-tabs__tab">Usuarios</a>
+	      <a href="#detalle-panel" class="mdl-tabs__tab">Detalle</a>
+  		</div>
+
+  		<div class="mdl-tabs__panel " id="usuarios-panel">
+<h2> Usuarios </h2>
+<br>
+<section class="section--center mdl-grid mdl-grid--no-spacing ">
+
+
+
+
+<table style="margin:0px auto;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	<thead>
+	<tr>
+		<td class="mdl-data-table__cell--non-numeric">Usuario</td>
+		
+		<td > #Historias</td>
+		<td> #Puntos </td>
+	</tr>
+	</thead>
+	<tbody>
+
+	{% for user in users %}
+
+		<tr>
+				<td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
+				
+				<td >{{user.total}}</td>
+				<td >{{user.puntos}}</td>
+
+
+		</tr>
+
+	{% endfor %}
+	</tbody>
+
+	<tr>
+				<td></td>
+				
+				<td >{{ users|sum(attribute='total') }}</td>
+				<td >{{users|sum(attribute='puntos') }}</td>
+
+
+		</tr>
+
+</table>
+
+</section>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="mdl-tabs__panel is-active" id="resumen-panel">
+
+<h2>Detalle</h2>
+<br>
+<section class="section--center mdl-grid mdl-grid--no-spacing ">
+	<table style="margin:0px auto;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 
 <thead>
 <tr>
@@ -69,59 +143,22 @@
 
 </table>
 
-</div>
 
-</div>
+</section>  
 
-<div class="mdl-grid">
- <div class="mdl-cell mdl-cell--12-col">
+  			
 
 
-<h1> Usuarios </h1>
-<table class="mdl-data-table mdl-js-data-table">
-	<thead>
-	<tr>
-		<td class="mdl-data-table__cell--non-numeric">Usuario</td>
-		
-		<td > #Historias</td>
-		<td> #Puntos </td>
-	</tr>
-	</thead>
-	<tbody>
-
-	{% for user in users %}
-
-		<tr>
-				<td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
-				
-				<td >{{user.total}}</td>
-				<td >{{user.puntos}}</td>
 
 
-		</tr>
-
-	{% endfor %}
-	</tbody>
-
-	<tr>
-				<td></td>
-				
-				<td >{{ users|sum(attribute='total') }}</td>
-				<td >{{users|sum(attribute='puntos') }}</td>
 
 
-		</tr>
 
-</table>
+  		</div>
 
-</div>
 
-</div>
+  		<div class="mdl-tabs__panel " id="detalle-panel">
 
-<div class="mdl-grid">
-	<div class="mdl-cell mdl-cell--12-col">
-
-<h1>Detalle</h1>
 
 
 {% for iteration in iteration_list%}
@@ -132,7 +169,7 @@
 
 	<h2>{{iteration.project.name}} - {{iteration.name}}  ( {{ iteration.stories|sum(attribute='points') }} ) </h2>
 	<br>
-	<table class="mdl-data-table mdl-js-data-table">
+	<table style="margin:0px auto;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 		<thead>
 			<tr>
 					<th class="mdl-data-table__cell--non-numeric">  Usuario(s) </th>
@@ -183,8 +220,14 @@
 
 {% endfor %}
 
+
+  		</div>
+
+	</div>	
 </div>
 
-</div>
+
+
+
 
 {% endblock %}
