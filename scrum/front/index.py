@@ -170,7 +170,16 @@ def r2():
 	u = []
 	for row in urows:
 		u.append(row)
-	return render_template('r2.html',u=u)
+
+	sql = " SELECT t.username, AVG(puntos) as puntos  FROM ( " + sql + " ) as t GROUP BY username ORDER BY t.username  "
+
+	av = []
+	urows = db.engine.execute(text(sql))
+	for row in urows:
+		av.append(row)
+
+	 	
+	return render_template('r2.html',u=u,av=av)
 
 def buscar():
 

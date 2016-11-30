@@ -6,11 +6,30 @@
 
 <h1>R2</h1>
 
+<table class="mdl-data-table mdl-js-data-table">
+<tr>
+	<td class="mdl-data-table__cell--non-numeric"> Usuario</td>
+	<td> Promedio de Puntos</td>
+</tr>
+{% for row in av%}
+<tr>
+	<td class="mdl-data-table__cell--non-numeric"> {{row.username}} </td>
+	<td style="text-align:right"> {{row.puntos | round(1)}} </td>
+</tr>
+	
+{% endfor %}
+<tr>
+	<td class="mdl-data-table__cell--non-numeric"> Velocidad Por Spring  </td>
+	<td> {{ av  | sum(  attribute='puntos' ) | round(1)}} </td>
+</tr>
+</table>
 
 
 {% for group in u|groupby('username')%}
 
-	<h2>{{group.grouper}}</h2>
+	
+
+	<h2>{{group.grouper}} </h2>
 	<table class="mdl-data-table mdl-js-data-table">
 	 <thead>	
 		<tr>
@@ -21,8 +40,12 @@
 		</tr>
 	</thead>
 	<tbody>
+	
+	
 
 	{% for row in group.list%}
+
+	
 		<tr>
 				<td > {{row.username}} </td>
 				<td> {{row.start_date}} - {{row.end_date}} </td>
@@ -38,6 +61,7 @@
 			<td>   </td>
 			<td style="text-align:right"> {{ group.list|sum(  attribute='total' )}} </td>
 			<td style="text-align:right"> {{ group.list|sum(  attribute='puntos' )}}  </td>
+			
 	</tr>
 
 

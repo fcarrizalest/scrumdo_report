@@ -1,25 +1,45 @@
 
-Usage
-=====
+# ScrumDo Report
 
-1. Optional: First, get set up a python virtual environment
+### Dependecias
 
-    virtualenv env
+Necesitas instalar 
+ https://www.docker.com/products/overview
 
-2. Set up the requirements
+### Configuración
+Editar los archivo Dockerfile tambien el del workes/Dockerfile
 
-    pip install -r requirements.txt
+SCRUMDO_USERNAME
+SCRUMDO_PASSWORD
 
-3. Edit srcum/settings.py to include your authentication information
 
 
-4. Run the scripts
-	
-	python manage.py cron
+### Instalación
 
-	python manage.py log
-	
-    python web.py
+```sh
+$ docker-compose up
+```
+
+### Inicializar DB
+
+
+http://localhost:5000/iniciadb
+
+
+Obtener los datos generales de cada spring
+
+http://localhost:5000/cron
+
+
+Obtener los datos las historias
+
+http://localhost:5000/log
+
+
+
+
+
+
 
 
 
