@@ -88,7 +88,18 @@ def index():
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id AND\
 				  	  		stories.all_labels = 'Bug' \
-				   ) as sb \
+				   ) as sb, \
+					( \
+				  	  SELECT coalesce( NULLIF( SUM( stories.points ),0) , 0) as sb \
+				  	  FROM stories \
+				  	  WHERE stories.iteration_id = iterations.id AND\
+				  	  		stories.cell_id in (\
+				  	  			SELECT id \
+				  	  			FROM cells\
+				  	  			WHERE cells.label != 'Todo' AND\
+				  	  				  cells.label != 'Doing'\
+				  	  		 ) \
+				   ) as terminados \
 			FROM iterations \
 			INNER JOIN projects ON iterations.project_id = projects.id \
 			WHERE  iterations.end_date = :end_date \

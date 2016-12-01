@@ -104,10 +104,16 @@
 <tr>
 	<th class="mdl-data-table__cell--non-numeric"> Nombre  </th>
 	<th> #Historias </th>
-	<th> #Puntos </th>
+	
 
-	<th> #HistoriasB </th>
-	<th> #Bugs Puntos </th>
+	<th> #Puntos Planeados</th>
+
+	
+	
+
+	<th> Completados </th>
+
+
 
 </tr>
 </thead>
@@ -121,11 +127,11 @@
 		<tr>	
 
 		<td class="mdl-data-table__cell--non-numeric"> {{ iteration.pname}} - {{iteration.name}}</td>
-		<td > {{iteration.story_count}} </td>
-		<td  >  {{iteration.spoints}}  </td>
+		<td> {{iteration.story_count}} </td>
+		
+		<td>  {{iteration.spoints}}  </td>
 
-		<td  >   {{iteration.sb}}  </td>
-		<td  >   {{iteration.sbpoints}}  </td>
+		<td> {{iteration.terminados}} </td>
 
 	</tr>
 
@@ -135,10 +141,12 @@
 	<tr>
 		<td></td>
 		<td > {{ rows|sum(  attribute='story_count' )}} </td>
+		
 		<td  > {{ rows|sum(  attribute='spoints' )}} </td>
 
-		<td  >  {{ rows|sum(  attribute='sb' )}}  </td>
-		<td  >  {{ rows|sum(  attribute='sbpoints' )}}  </td>
+		
+		
+		<td  >  {{ rows|sum(  attribute='terminados' )}}  </td>
 	</tr>
 
 </table>
