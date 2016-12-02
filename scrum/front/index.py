@@ -193,14 +193,48 @@ def r2():
 	return render_template('r2.html',u=u,av=av)
 
 def buscar():
+	today = datetime.date.today()
+
+	end_date = today + datetime.timedelta( (2-today.weekday()) % 7 )
+
+	str_date = end_date.strftime('%Y-%m-%d')
+
 
 	manager = Manager(create_app())
-	manager.add_command('log', LogCommand())
+	l = LogCommand()
+	l.str_date = str_date
+
+	manager.add_command('log', l )
 
 	manager.run(None,'log' )
 	return 'ok'
 
 
+def actualizatodo():
+	today = datetime.date.today()
+
+	end_date = today + datetime.timedelta( (2-today.weekday()) % 7 )
+
+	str_date = end_date.strftime('%Y-%m-%d')
+
+
+	manager = Manager(create_app())
+	l = LogCommand()
+
+	manager.add_command('log', l )
+
+	manager.run(None,'log' )
+	return 'ok'
+
+
+@route(bp, '/all',methods=('GET','POST'))
+def all():
+	redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+	conn = redis.from_url(redis_url)
+	q = Queue(connection=conn)
+	result = q.enqueue(actualizatodo)
+	
+	return redirect(url_for('.index'))
 
 @route(bp, '/log',methods=('GET','POST'))
 def log():

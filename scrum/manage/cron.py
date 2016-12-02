@@ -11,6 +11,7 @@ from ..services import organizations,projects,iterations,users,stories,cells,lab
 from datetime import datetime
 
 class LogCommand(Command):
+	str_date = None
 
 	def run(self):
 		print "Iniciando"
@@ -18,7 +19,13 @@ class LogCommand(Command):
 		base_url = "%s/api/v3/" % scrumdo_host
 		api = slumber.API(base_url, auth=(scrumdo_username, scrumdo_password))
 
-		iteration_list = iterations.all()
+
+		if self.str_date != None:
+			print "Filtrando"
+			iteration_list = iterations.find( end_date= self.str_date )
+		else:
+			iteration_list = iterations.all()
+
 		api_count = self.check_throttle(1)
 		for iteration in iteration_list:
 			print "1"
