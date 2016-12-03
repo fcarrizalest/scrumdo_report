@@ -155,6 +155,58 @@ def index():
 		end_date= str_date, 
 		iteration_list=iteration_list)
 
+
+@route(bp, '/r3',methods=('GET','POST') )
+def r3():
+
+	sql = "\
+		SELECT t.name as name,	\
+				t.points as bp,\
+				t2.points as points\
+			FROM (\
+				SELECT 	SUM(stories.points) as points,\
+			  			min(projects.name) as name,\
+			  			min(projects.id) as id\
+			  	FROM stories\
+			   	INNER JOIN\
+					iterations ON iterations.id = stories.iteration_id\
+				INNER JOIN	\
+					projects ON projects.id = iterations.project_id\
+				WHERE stories.all_labels = 'Bug'\
+				GROUP BY projects.id\
+				ORDER BY points\
+				) as t\
+		INNER JOIN (\
+			SELECT 	SUM(st.points) as points,\
+			  			min(pr.name) as name,\
+			  			min(pr.id) as id\
+			  	FROM stories as st\
+			   	INNER JOIN\
+					iterations as it ON it.id = st.iteration_id\
+				INNER JOIN	\
+					projects as pr ON pr.id = it.project_id\
+				WHERE st.all_labels != 'Bug'\
+				GROUP BY pr.id\
+				\
+		) as t2\
+		ON t2.id = t.id\
+		ORDER BY name\
+	"
+
+
+	
+	av = []
+	urows = db.engine.execute(text(sql))
+	for row in urows:
+		av.append(row)
+
+
+	return render_template('r3.html',av=av)
+
+
+
+
+
 @route(bp, '/r2',methods=('GET','POST'))
 def r2():
 	sql = "SELECT 	users.username,\
@@ -232,7 +284,7 @@ def all():
 	redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 	conn = redis.from_url(redis_url)
 	q = Queue(connection=conn)
-	result = q.enqueue(actualizatodo)
+	result = q.enqueue(actualizatodo,timeout=3000)
 	
 	return redirect(url_for('.index'))
 
