@@ -100,7 +100,7 @@ def index():
 				  	  				  cells.label != 'Doing'\
 				  	  		 ) \
 				   ) as terminados, \
-				   (  \
+				   coalesce( NULLIF( (  \
 				   	 SELECT  coalesce( NULLIF( COUNT(  stories.id ),0) , 0)  as trabajando \
 				  	  FROM stories \
 				  	  WHERE stories.iteration_id = iterations.id AND\
@@ -110,7 +110,7 @@ def index():
 				  	  			WHERE \
 				  	  				  cells.label = 'Doing'\
 				  	  		 ) GROUP BY stories.iteration_id \
-				   	) as trabajando	\
+				   	),0) , 0) as trabajando	\
 			FROM iterations \
 			INNER JOIN projects ON iterations.project_id = projects.id \
 			WHERE  iterations.end_date = :end_date \
