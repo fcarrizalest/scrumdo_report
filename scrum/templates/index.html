@@ -120,16 +120,18 @@ R1
 <thead>
 <tr>
 	<th class="mdl-data-table__cell--non-numeric"> Nombre  </th>
-	<th> #Historias </th>
 	
-
-	<th> #Puntos Planeados</th>
-
 	
 	
 
-	<th> Completados </th>
-	<th> En progreso </th>
+	<th style="width:"> #Puntos Planeados</th>
+	<th> #Puntos Trabajandose</th>
+
+	
+	
+
+	<th> #Puntos Completados </th>
+	
 
 
 </tr>
@@ -144,13 +146,19 @@ R1
 		<tr>	
 
 		<td class="mdl-data-table__cell--non-numeric"> {{ iteration.pname}} - {{iteration.name}}</td>
-		<td> {{iteration.story_count}} </td>
 		
-		<td>  {{iteration.spoints}}  </td>
+	
+
+		<td>  {{iteration.spoints}}   </td>
+
+		<td>{{ iteration.trabajandopuntos }} </td>
 
 		<td> {{iteration.terminados}} </td>
 
-		<td>{{ iteration.trabajando }}</td>
+		
+
+		
+		
 
 	</tr>
 
@@ -158,12 +166,13 @@ R1
 
 </tbody>
 	<tr>
+		
 		<td></td>
-		<td > {{ rows|sum(  attribute='story_count' )}} </td>
+		
 		
 		<td  > {{ rows|sum(  attribute='spoints' )}} </td>
 
-		
+		<td> {{ rows|sum(  attribute='trabajandopuntos' )}} </td>
 		
 		<td  >  {{ rows|sum(  attribute='terminados' )}}  </td>
 	</tr>
