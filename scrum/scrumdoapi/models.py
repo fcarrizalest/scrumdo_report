@@ -15,7 +15,7 @@ class Organization(OrganizationJsonSerializer, db.Model):
 
 
 class ProjectJsonSerializer(JsonSerializer):
-	__json_public__ = ['slug','name']
+	__json_public__ = ['slug','name','id']
 
 
 class Project(ProjectJsonSerializer,db.Model):
