@@ -93,7 +93,7 @@ class Label(LabelJsonSerializer,db.Model):
 
 
 class StoryJsonSerializer(JsonSerializer):
-	__json_public__ = ['id','name']
+	__json_public__ = ['id','summary','points','users','labels','cell']
 
 class Story(StoryJsonSerializer, db.Model):
 	__tablename__ = 'stories'
