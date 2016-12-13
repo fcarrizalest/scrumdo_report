@@ -26,12 +26,17 @@ $ docker-compose up
 http://localhost:5000/iniciadb
 
 
-Obtener los datos generales de cada spring
+Obtener los datos generales de todos los spring
 
 http://localhost:5000/cron
 
 
-Obtener los datos las historias
+Obtener los datos de todas las  historias
+
+http://localhost:5000/all
+
+
+Obtener los datos las historias del spring actual
 
 http://localhost:5000/log
 
