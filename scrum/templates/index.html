@@ -68,7 +68,9 @@ R1
 		<td class="mdl-data-table__cell--non-numeric">Usuario</td>
 		
 		<td > #Historias</td>
-		<td> #Puntos </td>
+		
+		<td> Total #Puntos </td>
+		<td> Esta trabajando en:</td>
 	</tr>
 	</thead>
 	<tbody>
@@ -79,8 +81,9 @@ R1
 				<td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
 				
 				<td >{{user.total}}</td>
+				
 				<td >{{user.puntos}}</td>
-
+				<td> {{user.projects}}</td>
 
 		</tr>
 
@@ -91,6 +94,7 @@ R1
 				<td></td>
 				
 				<td >{{ users|sum(attribute='total') }}</td>
+				
 				<td >{{users|sum(attribute='puntos') }}</td>
 
 

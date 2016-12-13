@@ -140,7 +140,9 @@ def index():
 	sql = "SELECT 	users.username,\
 					users.first_name,\
 					COUNT(stories.id) as total,\
-					SUM(stories.points) as puntos\
+					SUM(stories.points)  as puntos,\
+					coalesce( NULLIF(   MAX(t.puntos)  ,0),0) as p_trabajando,\
+					 coalesce( NULLIF( MAX(t.projects), ' ') ,' ') as projects \
 			FROM story_user\
 			INNER JOIN\
 				stories ON stories.id = story_user.story_id\
@@ -149,11 +151,35 @@ def index():
 			INNER JOIN\
 				iterations ON iterations.id = stories.iteration_id AND\
 				iterations.end_date = :end_date\
+			INNER JOIN projects ON iterations.project_id = projects.id\
+			LEFT JOIN (\
+					SELECT 	users.id,users.username,\
+					users.first_name,\
+					COUNT(stories.id) as total,\
+					coalesce( NULLIF(  SUM(stories.points)  ,0) , 0) as puntos,\
+					string_agg(projects.name,',') as projects\
+					FROM story_user\
+						INNER JOIN\
+							stories ON stories.id = story_user.story_id\
+						INNER JOIN \
+							users ON users.id = story_user.user_id\
+						INNER JOIN\
+							iterations ON iterations.id = stories.iteration_id AND\
+							iterations.end_date = :end_date2 AND\
+							stories.cell_id in (\
+							  	  			SELECT id \
+							  	  			FROM cells\
+							  	  			WHERE \
+							  	  				  cells.label = 'Doing'\
+							  	  		 )\
+						INNER JOIN projects ON iterations.project_id = projects.id\
+						GROUP BY users.id\
+				) as t ON t.id = users.id \
 			GROUP BY users.id\
 		  "
 
 
-	urows = db.engine.execute(text(sql), end_date=str_date )
+	urows = db.engine.execute(text(sql), end_date=str_date,end_date2=str_date )
 
 	u = []
 	for row in urows:
