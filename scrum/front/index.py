@@ -21,7 +21,6 @@ from flask_script import Manager
 
 from ..scrumdoapi import create_app
 
-from ..manage import CronCommand,LogCommand
 
 
 
@@ -291,6 +290,22 @@ def r2():
 
 	 	
 	return render_template('r2.html',u=u,av=av)
+
+@route(bp, '/r4',methods=('GET','POST'))
+def r4():
+	sql = " SELECT   iterations.end_date , SUM( stories.points ) as puntos \
+			FROM  stories \
+			INNER JOIN iterations ON iterations.id = stories.iteration_id\
+			WHERE iterations.end_date > '2016-10-01'\
+			GROUP BY iterations.end_date\
+			ORDER BY iterations.end_date DESC"
+
+	rows = []
+	urows = db.engine.execute(text(sql))
+	for row in urows:
+		rows.append(row)
+
+	return render_template('r4.html', rows=rows )
 
 def buscar():
 	today = datetime.date.today()

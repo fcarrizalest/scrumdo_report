@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+R4
+{% endblock %}
+
+{% block ltitle %}
+
+R4
+{% endblock %}
+
+
+{% block content %}
+
+
+
+<h1>R4</h1>
+
+<table style="margin:0px auto" class="mdl-data-table mdl-js-data-table">
+<tr>
+	<td class="mdl-data-table__cell--non-numeric"> Proyecto</td>
+	<td class="mdl-data-table__cell--non-numeric"> #Puntos</td>
+	
+	
+</tr>
+{% for row in rows%}
+<tr>
+	<td class="mdl-data-table__cell--non-numeric"> {{row.end_date}} </td>
+	<td > {{row.puntos}} </td>
+	
+</tr>
+
+
+{% endfor %}
+</table>
+
+
+
+{% endblock %}
