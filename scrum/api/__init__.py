@@ -1,7 +1,7 @@
 from functools import wraps
 
 from flask import jsonify
-
+from flask_cors import CORS, cross_origin
 
 from ..core import ScrumError, ScrumFormError
 from ..helpers import JSONEncoder
@@ -20,6 +20,7 @@ def create_app(settings_override=None, register_security_blueprint=False):
     app.errorhandler(ScrumError)(on_scrum_error)
     app.errorhandler(ScrumFormError)(on_scrum_form_error)
     app.errorhandler(404)(on_404)
+    CORS(app)
 
     return app
 
