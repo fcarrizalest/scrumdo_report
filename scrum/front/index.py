@@ -308,6 +308,33 @@ def r4():
 
 	return render_template('r4.html', rows=rows )
 
+
+@route(bp, '/r5',methods=('GET','POST'))
+def r5():
+	sql = " SELECT   iterations.end_date,projects.name as project, iterations.name,   \
+				( \
+				  	  SELECT coalesce( NULLIF( SUM( stories.points ),0) , 0) as sb \
+				  	  FROM stories \
+				  	  WHERE stories.iteration_id = iterations.id AND\
+				  	  		stories.cell_id in (\
+				  	  			SELECT id \
+				  	  			FROM cells\
+				  	  			WHERE cells.label != 'Todo' AND\
+				  	  				  cells.label != 'Doing'\
+				  	  		 ) \
+				   ) as terminados\
+			FROM  iterations \
+			INNER JOIN projects ON iterations.project_id = projects.id \
+			WHERE iterations.end_date > '2016-10-01'\
+			ORDER BY projects.name,iterations.end_date  DESC"
+
+	rows = []
+	urows = db.engine.execute(text(sql))
+	for row in urows:
+		rows.append(row)
+
+	return render_template('r5.html', rows=rows )
+
 def buscar():
 	today = datetime.date.today()
 
