@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+R1
+{% endblock %}
+
+{% block ltitle %}
+
+R1
+{% endblock %}
+
+
+
+
+
+
+{% block content %}
+
+<div class="section--center mdl-grid mdl-grid--no-spacing ">
+
+<form style="margin:0px auto" action="{{url_for('.index')}}" method="POST" >
+
+	{{ form.csrf_token }}
+
+	<div >
+
+		<div class="mdl-selectfield mdl-js-selectfield">
+		{{ form.end_date(class_="mdl-selectfield__select") }}
+		<div class="mdl-selectfield__icon"><i class="material-icons">arrow_drop_down</i></div>
+		<label class="mdl-selectfield__label" for="gender">User gender</label>
+  	<span class="mdl-selectfield__error">Select a value</span>
+		</div>
+
+
+
+
+
+	<input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit"> 
+
+	</div>
+</form>
+
+</div>
+
+
+<div class="  section--center mdl-grid mdl-grid--no-spacing">
+	<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+		<div class="mdl-tabs__tab-bar ">
+	      <a href="#resumen-panel" class="mdl-tabs__tab is-active">Resumen</a>
+	      <a href="#usuarios-panel" class="mdl-tabs__tab">Usuarios</a>
+	      <a href="#detalle-panel" class="mdl-tabs__tab">Detalle</a>
+  		</div>
+
+  		<div class="mdl-tabs__panel " id="usuarios-panel">
+<h2> Usuarios </h2>
+<br>
+<section class="section--center mdl-grid mdl-grid--no-spacing ">
+
+
+
+
+<table style="margin:0px auto;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	<thead>
+	<tr>
+		<td class="mdl-data-table__cell--non-numeric">Usuario</td>
+		
+		<td > #Historias</td>
+		
+		<td> Total #Puntos </td>
+		<td> Esta trabajando en:</td>
+	</tr>
+	</thead>
+	<tbody>
+
+	{% for user in users %}
+
+		<tr>
+				<td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
+				
+				<td >{{user.total}}</td>
+				
+				<td >{{user.puntos}}</td>
+				<td> {{user.projects}}</td>
+
+		</tr>
+
+	{% endfor %}
+	</tbody>
+
+	<tr>
+				<td></td>
+				
+				<td >{{ users|sum(attribute='total') }}</td>
+				
+				<td >{{users|sum(attribute='puntos') }}</td>
+
+
+		</tr>
+
+</table>
+
+</section>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="mdl-tabs__panel is-active" id="resumen-panel">
+
+<h2>Detalle</h2>
+<br>
+<section class="section--center mdl-grid mdl-grid--no-spacing ">
+	<table style="margin:0px auto;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+
+<thead>
+<tr>
+	<th class="mdl-data-table__cell--non-numeric"> Nombre  </th>
+	
+	
+	
+
+	<th style="width:"> #Puntos Planeados</th>
+	<th> #Puntos Trabajandose</th>
+
+	
+	
+
+	<th> #Puntos Completados </th>
+	
+
+
+</tr>
+</thead>
+
+
+
+<tbody>
+{% for iteration in rows%}
+
+	
+		<tr>	
+
+		<td class="mdl-data-table__cell--non-numeric"> {{ iteration.pname}} - {{iteration.name}}</td>
+		
+	
+
+		<td>  {{iteration.spoints}}   </td>
+
+		<td>{{ iteration.trabajandopuntos }} </td>
+
+		<td> {{iteration.terminados}} </td>
+
+		
+
+		
+		
+
+	</tr>
+
+{% endfor %}
+
+</tbody>
+	<tr>
+		
+		<td></td>
+		
+		
+		<td  > {{ rows|sum(  attribute='spoints' )}} </td>
+
+		<td> {{ rows|sum(  attribute='trabajandopuntos' )}} </td>
+		
+		<td  >  {{ rows|sum(  attribute='terminados' )}}  </td>
+	</tr>
+
+</table>
+
+
+</section>  
+
+  			
+
+
+
+
+
+
+
+  		</div>
+
+
+  		<div class="mdl-tabs__panel " id="detalle-panel">
+
+
+
+{% for iteration in iteration_list%}
+	
+
+	{% if iteration.stories|sum(attribute='points') > 0 %}
+
+
+	<h2>{{iteration.project.name}} - {{iteration.name}}  ( {{ iteration.stories|sum(attribute='points') }} ) </h2>
+	<br>
+	<table style="margin:0px auto;" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+		<thead>
+			<tr>
+					<th class="mdl-data-table__cell--non-numeric">  Usuario(s) </th>
+					<th>  #Historia </th>
+					<th class="mdl-data-table__cell--non-numeric">  Historia</th>
+					<th>  Puntos </th>
+					<th class="mdl-data-table__cell--non-numeric">  Status</th>
+					<th class="mdl-data-table__cell--non-numeric">  Tipo</th>
+
+
+			</tr>
+		</thead>
+		<tbody>
+	{% for story in iteration.stories%}
+	<tr>	
+
+			<td class="mdl-data-table__cell--non-numeric"> 
+
+
+				{{story.users|map(attribute='username')|join(', ') }}
+				
+
+			</td>
+
+			<td> <a target="_blank" href="https://app.scrumdo.com/projects/story_permalink/{{story.id}}">#{{story.number}}</a></td>
+			<td class="mdl-data-table__cell--non-numeric"> {{story.summary|truncate(50)}} </td>
+			<td > {{story.points}} </td>
+			<td class="mdl-data-table__cell--non-numeric" style="text-align:center" > {{story.cell.label}} </td>
+			<td  class="mdl-data-table__cell--non-numeric" style="text-align:center"> 
+
+
+				{{story.labels|map(attribute='name')|join(', ') }}
+				
+				
+
+			</td>
+
+	</tr>
+
+	{% endfor %} 
+</tbody>
+	
+
+	</table>
+
+	{% endif %}
+
+
+{% endfor %}
+
+
+  		</div>
+
+	</div>	
+</div>
+
+
+
+
+
+{% endblock %}

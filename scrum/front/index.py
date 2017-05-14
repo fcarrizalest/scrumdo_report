@@ -31,6 +31,50 @@ bp = Blueprint('dashboard', __name__)
 
 @route(bp, '/',methods=('GET','POST'))
 def index():
+
+	select_list_rows = db.engine.execute(text('SELECT iterations.end_date \
+									 FROM iterations \
+									 GROUP BY iterations.end_date order by iterations.end_date DESC LIMIT 10'))
+
+	sql = "\
+		SELECT t.name as name,	\
+				t.points as points,\
+				t.end_date as end_date\
+			FROM (\
+				SELECT 	SUM(stories.points) as points,\
+			  			min(projects.name) as name,\
+			  			min(projects.id) as id,\
+			  			min(iterations.end_date) as end_date\
+			  	FROM stories\
+			   	INNER JOIN\
+					iterations ON iterations.id = stories.iteration_id\
+				INNER JOIN	\
+					projects ON projects.id = iterations.project_id\
+				WHERE iterations.end_date IN ( SELECT iterations.end_date \
+									 FROM iterations \
+									 GROUP BY iterations.end_date order by iterations.end_date DESC LIMIT 10 )\
+				GROUP BY projects.id,\
+				iterations.end_date\
+				ORDER BY points\
+				) as t\
+		ORDER BY name\
+	"
+
+	select_list = []
+	
+	for row in select_list_rows:
+		select_list.append(row)
+	
+	
+	projects_list = []
+	urows = db.engine.execute(text(sql))
+	for row in urows:
+		projects_list.append(row)
+
+	return render_template('index.html',select_list=select_list, projects_list=projects_list )
+
+@route(bp, '/r1',methods=('GET','POST'))
+def r1():
 	form = Searh_Form()
 
 
@@ -195,7 +239,7 @@ def index():
 
 
 
-	return render_template('index.html',
+	return render_template('r1.html',
 		form = form, 
 		select_list=select_list, 
 		rows=rows,
