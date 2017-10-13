@@ -58,8 +58,8 @@ class LogCommand(Command):
 						new_user = users.new( 
 							id = user_api['id'], 
 							username = user_api['username'], 
-							first_name = user_api['first_name'],  
-							last_name = user_api['last_name'] )
+							first_name = user_api['username'],  
+							last_name = user_api['username'] )
 
 						db_user = users.save( new_user )
 
