@@ -52,8 +52,7 @@ class LogCommand(Command):
 					db_user = users.first(id = user_api['id'] )
 
 					if not db_user:
-						print "Creando usuario"
-						print user_api['first_name']
+						
 
 						new_user = users.new( 
 							id = user_api['id'], 
