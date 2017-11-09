@@ -30,10 +30,18 @@ R3
 {% for row in av%}
 <tr>
 	<td class="mdl-data-table__cell--non-numeric"> {{row.name}} </td>
-	<td> {{row.points}} </td>
+	<td> {{row.points - row.bp }} </td>
 	<td>  {{row.bp}} </td>
-	<td> {{row.points + row.bp}} </td>
-	<td> {{ ( (row.points + row.bp) / 100 * row.bp ) | round(2)  }} % </td>
+	<td> {{row.points }} </td>
+	
+	<td> 
+		{% if row.points  > 0 %}
+		{{ (   100 * row.bp / row.points  ) | round(2)  }} %
+
+		{% else %}
+		0.0 %
+		{% endif %}
+	</td>
 </tr>
 
 

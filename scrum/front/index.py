@@ -251,38 +251,32 @@ def r1():
 @route(bp, '/r3',methods=('GET','POST') )
 def r3():
 
-	sql = "\
-		SELECT t.name as name,	\
-				t.points as bp,\
-				t2.points as points\
-			FROM (\
-				SELECT 	SUM(stories.points) as points,\
-			  			min(projects.name) as name,\
-			  			min(projects.id) as id\
-			  	FROM stories\
-			   	INNER JOIN\
-					iterations ON iterations.id = stories.iteration_id\
-				INNER JOIN	\
-					projects ON projects.id = iterations.project_id\
-				WHERE stories.all_labels = 'Bug'\
-				GROUP BY projects.id\
-				ORDER BY points\
-				) as t\
-		INNER JOIN (\
-			SELECT 	SUM(st.points) as points,\
-			  			min(pr.name) as name,\
-			  			min(pr.id) as id\
-			  	FROM stories as st\
-			   	INNER JOIN\
-					iterations as it ON it.id = st.iteration_id\
-				INNER JOIN	\
-					projects as pr ON pr.id = it.project_id\
-				WHERE st.all_labels != 'Bug'\
-				GROUP BY pr.id\
-				\
-		) as t2\
-		ON t2.id = t.id\
-		ORDER BY name\
+	sql = "SELECT t.name as name  , SUM(t.bugs) as bp , SUM(t.puntos) as points \
+FROM \
+( \
+( \
+SELECT\
+    projects.name,\
+    SUM(stories.points) as bugs,\
+    0 as puntos \
+FROM stories \
+INNER JOIN iterations on iterations.id = stories.iteration_id \
+INNER JOIN projects on projects.id = iterations.project_id \
+WHERE stories.id IN ( select story_id  from label_story WHERE label_id IN ( select id from labels where name like '%Bug%' )  ) \
+GROUP BY projects.name \
+ORDER BY SUM(stories.points) \
+) \
+UNION ( \
+SELECT\
+    projects.name,\
+    0 as bugs,\
+    SUM(stories.points) as puntos \
+FROM stories \
+INNER JOIN iterations on iterations.id = stories.iteration_id \
+INNER JOIN projects on projects.id = iterations.project_id \
+GROUP BY projects.name \
+ORDER BY SUM(stories.points) \
+) ) as t  GROUP BY t.name ORDER BY bp \
 	"
 
 
